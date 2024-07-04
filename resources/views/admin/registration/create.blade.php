@@ -350,6 +350,7 @@
                 data: {
                     'floor': floor
                 },
+                // asdfasfasdfasd
                 success: function(data) {
                     $("#rooms").html('');
                     if (data.rooms.length > 0) {
