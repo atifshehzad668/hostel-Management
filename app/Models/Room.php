@@ -9,12 +9,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Room extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'room_name', 'room_type', 'no_of_seats', 'status',
+    ];
     public function floor()
     {
         return $this->belongsTo(Floor::class);
     }
-    public function registration()
+    public function registrations()
     {
-        return $this->belongsTo(Registration::class);
+        return $this->hasMany(Registration::class);
     }
 }

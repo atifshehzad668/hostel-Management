@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\FeeController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -53,6 +54,12 @@ Route::prefix('admin')->group(function () {
         Route::post('/registration/update/{id}', [RegistrationController::class, 'update'])->name('registration.update');
         Route::get('/registration/view/{id}', [RegistrationController::class, 'view'])->name('registration.view');
         Route::get('/filter/rooms', [RegistrationController::class, 'filter'])->name('filter.rooms');
+
+
+        // Fee Routes
+
+        Route::get('/fee/create', [FeeController::class, 'create'])->name('fee.create');
+        Route::get('/fee/index', [FeeController::class, 'index'])->name('fee.index');
     });
 });
 

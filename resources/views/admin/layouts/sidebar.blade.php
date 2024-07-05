@@ -37,6 +37,12 @@
                         <p>Register</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('fee.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <p>Fees</p>
+                    </a>
+                </li>
                 {{-- <li class="nav-item">
                     <a href="" class="nav-link">
                         <i class="nav-icon fas fa-file-alt"></i>
