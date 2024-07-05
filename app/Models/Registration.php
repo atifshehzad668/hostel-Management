@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Fee;
 use App\Models\Floor;
 use Spatie\Image\Enums\Fit;
 use Spatie\Image\Manipulations;
@@ -30,5 +31,9 @@ class Registration extends Model implements HasMedia
     public function room()
     {
         return $this->belongsTo(Room::class);
+    }
+    public function fee()
+    {
+        return $this->belongsTo(Fee::class);
     }
 }

@@ -2,96 +2,125 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
+use Carbon\Carbon;
+use App\Models\Fee;
 use App\Models\Room;
 use App\Models\Floor;
 use App\Models\Registration;
 use Illuminate\Http\Request;
-use DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class FeeController extends Controller
 {
-    public function create(Request $request)
+    public function generate_fee(Request $request, $id)
     {
-        $registrations = Registration::all();
-        return view('admin.fee.create', get_defined_vars());
+        $registration = Registration::find($id);
+        return view('admin.fee.create', compact('registration'));
     }
-    // public function index(Request $request)
-    // {
-    //     if ($request->ajax()) {
-    //         $query = Registration::query()->with(['floor', 'room']);
 
-    //         // Filter by floor_id if provided
-    //         if ($request->filled('floor_id')) {
-    //             $query->where('floor_id', $request->input('floor_id'));
-    //         }
+    public function store_fee(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:registrations,id',
+            'fee_date' => 'required|date',
+            'amount' => 'required|numeric',
+            'paid_amount' => 'required|numeric',
+            'status' => 'required',
+        ]);
 
-    //         // Filter by user name if provided
-    //         if ($request->filled('user')) {
-    //             $query->whereHas('name', function ($subquery) use ($request) {
-    //                 $subquery->where('name', 'like', '%' . $request->input('user') . '%');
-    //             });
-    //         }
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
 
-    //         // Filter by room name if provided
-    //         if ($request->filled('serach_by_room')) {
-    //             $query->whereHas('room', function ($subquery) use ($request) {
-    //                 $subquery->where('room_name', 'like', '%' . $request->input('serach_by_room') . '%');
-    //             });
-    //         }
+        // Retrieve user details
+        $user = Registration::findOrFail($request->user_id);
+        $userName = $user->name;
 
-    //         $data = DataTables::of($query)
-    //             ->addColumn('action', function ($row) {
-    //                 // Add your action column HTML here
-    //                 return '<a href="#" class="btn btn-sm btn-info">Edit</a>';
-    //             })
-    //             ->rawColumns(['action'])
-    //             ->make(true);
+        $feeDate = Carbon::parse($request->fee_date);
+        $monthName = $feeDate->format('F');
+        $year = $feeDate->format('Y');
 
-    //         return $data;
-    //     }
+        $existingFee = Fee::where('registration_id', $request->user_id)
+            ->whereMonth('fee_date', $feeDate->month)
+            ->whereYear('fee_date', $year)
+            ->first();
 
-    //     $floors = Floor::all();
+        if ($existingFee) {
+            $request->session()->flash('error', "{$userName}'s fees for {$monthName} {$year} have already been submitted.");
 
-    //     return view('admin.fee.index', compact('floors'));
-    // }
+            return response()->json([
+                'status' => false,
+                'message' => "{$userName}'s fees for {$monthName} {$year} have already been submitted."
+            ]);
+        }
 
+        $fee = new Fee();
+        $fee->registration_id = $request->user_id;
+        $fee->fee_date = $request->fee_date;
+        $fee->amount = $request->amount;
+        $fee->paid_amount = $request->paid_amount;
+        $fee->status = $request->status;
+        $fee->save();
+
+        $request->session()->flash('success', "{$userName}'s {$monthName} {$year} fees submitted successfully.");
+        return response()->json([
+            'status' => true,
+            'message' => "{$userName}'s {$monthName} {$year} fees submitted successfully."
+        ]);
+    }
 
 
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Registration::query()->with(['floor', 'room']);
+            $query = Registration::with(['floor', 'room']);
 
-            // Filter by floor_id if provided
             if ($request->filled('floor_id')) {
                 $query->where('floor_id', $request->input('floor_id'));
             }
 
-            // Filter by user name if provided
+            if ($request->filled('search_by_room')) {
+                $query->whereHas('room', function ($subquery) use ($request) {
+                    $subquery->where('room_name', 'like', '%' . $request->input('search_by_room') . '%');
+                });
+            }
+
             if ($request->filled('user')) {
                 $query->where('name', 'like', '%' . $request->input('user') . '%');
             }
 
-            // Filter by room name if provided
-            if ($request->filled('serach_by_room')) {
-                $query->whereHas('room', function ($subquery) use ($request) {
-                    $subquery->where('room_name', 'like', '%' . $request->input('serach_by_room') . '%');
-                });
-            }
-
-            $data = DataTables::of($query)
+            return DataTables::of($query)
                 ->addColumn('action', function ($row) {
-                    // Add your action column HTML here
-                    return '<a href="#" class="btn btn-sm btn-info">Edit</a>';
+                    $url = route('fee.generate', $row->id);
+                    return '<a href="' . $url . '" class="btn btn-sm btn-info">Fee</a>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
-
-            return $data;
         }
 
         $floors = Floor::all();
 
         return view('admin.fee.index', compact('floors'));
+    }
+
+
+    public function user_fee_list(Request $request)
+    {
+        if ($request->ajax()) {
+            $query = Fee::with(['registration']);
+
+            return DataTables::of($query)
+                ->addColumn('action', function ($row) {
+                    // Add your action button here if needed
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('admin.fee.studentfee');
     }
 }

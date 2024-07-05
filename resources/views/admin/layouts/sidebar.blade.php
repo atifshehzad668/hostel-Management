@@ -40,7 +40,13 @@
                 <li class="nav-item">
                     <a href="{{ route('fee.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-file-alt"></i>
-                        <p>Fees</p>
+                        <p>Apply Fees</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('user_fee.list') }}" class="nav-link">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <p> Fee List</p>
                     </a>
                 </li>
                 {{-- <li class="nav-item">

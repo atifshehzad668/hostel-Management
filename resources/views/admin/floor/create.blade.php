@@ -8,7 +8,7 @@
                     <h1>Create Floor</h1>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a href="{{route('floor.index')}}" class="btn btn-primary">Back</a>
+                    <a href="{{ route('floor.index') }}" class="btn btn-primary">Back</a>
                 </div>
             </div>
         </div>
@@ -18,6 +18,11 @@
     <section class="content">
         <!-- Default box -->
         <div class="container-fluid">
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
             <form id="FloorForm" enctype="multipart/form-data" name="FloorForm">
                 @csrf
                 <div class="card">

@@ -58,8 +58,10 @@ Route::prefix('admin')->group(function () {
 
         // Fee Routes
 
-        Route::get('/fee/create', [FeeController::class, 'create'])->name('fee.create');
         Route::get('/fee/index', [FeeController::class, 'index'])->name('fee.index');
+        Route::get('/generate/fee/{id}', [FeeController::class, 'generate_fee'])->name('fee.generate');
+        Route::post('/fee/store', [FeeController::class, 'store_fee'])->name('fee.insert');
+        Route::get('/user_fee/list', [FeeController::class, 'user_fee_list'])->name('user_fee.list');
     });
 });
 

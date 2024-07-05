@@ -89,7 +89,7 @@ class RegistrationController extends Controller
                 ->addColumn('action', function ($row) {
                     $editUrl = route('registration.edit', $row->id);
                     $viewUrl = route('registration.view', $row->id);
-                    $feeUrl = route('fee.create', ['user_id' => $row->id]);
+                    // $feeUrl = route('fee.generate', ['user_id' => $row->id]);
 
                     // Edit button
                     $editBtn = '<a href="' . $editUrl . '">

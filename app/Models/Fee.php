@@ -2,10 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Registration;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Fee extends Model
 {
     use HasFactory;
+
+    public function registration()
+    {
+        return $this->belongsTo(Registration::class);
+    }
 }

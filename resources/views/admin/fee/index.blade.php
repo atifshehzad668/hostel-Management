@@ -17,6 +17,7 @@
     <section class="content">
         <div class="container-fluid">
             @include('admin.message')
+
             <div class="card">
                 <form action="{{ route('fee.index') }}" method="GET">
                     <div class="card-header">
@@ -38,8 +39,8 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <input type="text" id="search_by_room" name="serach_by_room" class="form-control"
-                                        placeholder="Search by Room" value="{{ request('serach_by_room') }}">
+                                    <input type="text" id="search_by_room" name="search_by_room" class="form-control"
+                                        placeholder="Search by Room" value="{{ request('search_by_room') }}">
                                 </div>
                                 <div class="col-md-4">
                                     <input type="text" id="user" name="user" class="form-control"
@@ -81,8 +82,7 @@
                     data: function(d) {
                         d.floor_id = $('#floor').val();
                         d.user = $('#user').val();
-                        d.serach_by_room = $('#search_by_room').val();
-                        // Add more parameters as needed
+                        d.search_by_room = $('#search_by_room').val();
                     }
                 },
                 columns: [{
