@@ -36,17 +36,7 @@ class RoomController extends Controller
 
             $room->save();
 
-            $request->session()->flash('success', 'Rooms Added Successfully');
-            return response()->json([
-                'status' => true,
-                'message' => 'Room added successfully'
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
-        }
+
     }
     public function index(Request $request)
     {

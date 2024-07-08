@@ -16,8 +16,13 @@ class Room extends Model
     {
         return $this->belongsTo(Floor::class);
     }
+    public function fee()
+    {
+        return $this->hasMany(Fee::class);
+    }
     public function registrations()
     {
         return $this->hasMany(Registration::class);
     }
+
 }

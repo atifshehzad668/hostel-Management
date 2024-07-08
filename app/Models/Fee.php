@@ -14,4 +14,12 @@ class Fee extends Model
     {
         return $this->belongsTo(Registration::class);
     }
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
+    public function floor()
+    {
+        return $this->belongsTo(Floor::class);
+    }
 }

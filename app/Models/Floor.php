@@ -21,4 +21,8 @@ class Floor extends Model
     {
         return $this->hasMany(Registration::class);
     }
+    public function fees()
+    {
+        return $this->hasMany(Fee::class);
+    }
 }

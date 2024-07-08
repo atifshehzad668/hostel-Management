@@ -7,9 +7,7 @@
                 <div class="col-sm-6">
                     <h1>Registrations</h1>
                 </div>
-                <div class="col-sm-6 text-right">
-                    <a href="{{ route('registration.create') }}" class="btn btn-primary">Register Student</a>
-                </div>
+
             </div>
         </div>
     </section>

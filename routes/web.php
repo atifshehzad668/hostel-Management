@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\FloorController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RecivedPaymentController;
 use App\Http\Controllers\RegistrationController;
 
 Route::get('/', function () {
@@ -62,6 +63,15 @@ Route::prefix('admin')->group(function () {
         Route::get('/generate/fee/{id}', [FeeController::class, 'generate_fee'])->name('fee.generate');
         Route::post('/fee/store', [FeeController::class, 'store_fee'])->name('fee.insert');
         Route::get('/user_fee/list', [FeeController::class, 'user_fee_list'])->name('user_fee.list');
+        Route::get('/user_fee/edit/{id}', [FeeController::class, 'user_fee_edit'])->name('user_fee.edit');
+        Route::post('/user_fee/update/{id}', [FeeController::class, 'user_fee_update'])->name('user_fee.update');
+        Route::delete('/user_fee/destroy/{id}', [FeeController::class, 'user_fee_destroy'])->name('user_fee.destroy');
+
+
+
+        //recived payments
+        // Route::post('/payment/store', [RecivedPaymentController::class, 'store'])->name('payment.store');
+        // Route::get('/getfee/detail/{id}', [RecivedPaymentController::class, 'feedetail'])->name('getfee.detail');
     });
 });
 

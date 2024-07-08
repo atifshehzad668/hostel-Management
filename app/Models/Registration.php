@@ -32,8 +32,8 @@ class Registration extends Model implements HasMedia
     {
         return $this->belongsTo(Room::class);
     }
-    public function fee()
+    public function feeses()
     {
-        return $this->belongsTo(Fee::class);
+        return $this->hasMany(Fee::class);
     }
 }
