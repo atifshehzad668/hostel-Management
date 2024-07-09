@@ -3,7 +3,7 @@
     <a href="#" class="brand-link">
         <img src="{{ asset('admin-assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">LARAVEL SHOP</span>
+        <span class="brand-text font-weight-light">Hostel Management</span>
     </a>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -21,32 +21,60 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('floor.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-file-alt"></i>
+                        <i class="fas fa-hotel"></i>
+
                         <p>Floors</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('rooms.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-file-alt"></i>
+                        <i class="fas fa-door-open"></i>
+
                         <p>Rooms</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('registration.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-file-alt"></i>
+                        <i class="nav-icon fas fa-user"></i>
+
                         <p>Register</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('fee.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-file-alt"></i>
+                        <i class="fas fa-dollar-sign"></i>
+
+
                         <p>Apply Fees</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('user_fee.list') }}" class="nav-link">
-                        <i class="nav-icon fas fa-file-alt"></i>
+                        <i class="fas fa-list"></i>
+
                         <p> Fee List</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('expense_head.index') }}" class="nav-link">
+                        <i class="fas fa-tags"></i>
+
+                        <p> Expense Head</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('expense.index') }}" class="nav-link">
+                        <i class="fas fa-receipt"></i>
+
+
+                        <p> Expense </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('staff.index') }}" class="nav-link">
+                        <i class="fas fa-user-tie"></i>
+
+                        <p> Staff </p>
                     </a>
                 </li>
                 {{-- <li class="nav-item">

@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Models\Registration;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Fee extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     public function registration()
     {

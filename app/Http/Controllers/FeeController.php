@@ -8,6 +8,7 @@ use App\Models\Fee;
 use App\Models\Room;
 use App\Models\Floor;
 use App\Models\Registration;
+use App\Models\Transection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -27,7 +28,6 @@ class FeeController extends Controller
             'amount' => 'required|numeric',
             'paid_amount' => 'required|numeric',
 
-            'status' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -51,11 +51,11 @@ class FeeController extends Controller
             ->first();
 
         if ($existingFee) {
-            $request->session()->flash('error', "{$userName}'s fees for {$monthName} {$year} have already been Issue.");
+            $request->session()->flash('error', "{$userName}'s fees for {$monthName} {$year} have already been issued.");
 
             return response()->json([
                 'status' => false,
-                'message' => "{$userName}'s fees for {$monthName} {$year} have already been issue."
+                'message' => "{$userName}'s fees for {$monthName} {$year} have already been issued."
             ]);
         }
 
@@ -67,12 +67,22 @@ class FeeController extends Controller
         $fee->status = $request->status;
         $fee->save();
 
+
+        $transection = new Transection();
+        $transection->transection_type_id = $fee->id;
+        $transection->amount = $fee->amount;
+        $transection->transection_date = $fee->fee_date;
+        $transection->description = "Fee for Room Rent";
+        $transection->status = 'credit';
+        $transection->save();
+
         $request->session()->flash('success', "{$userName}'s {$monthName} {$year} fees submitted successfully.");
         return response()->json([
             'status' => true,
             'message' => "{$userName}'s {$monthName} {$year} fees submitted successfully."
         ]);
     }
+
 
 
     public function index(Request $request)
@@ -253,6 +263,15 @@ class FeeController extends Controller
         $fee->status = $request->status;
         $fee->save();
 
+        $transection = Transection::where('transection_type_id', $fee->id)->first();
+        $transection->transection_type_id = $fee->id;
+        $transection->amount = $fee->amount;
+        $transection->transection_date = $fee->fee_date;
+        $transection->description = "Fee for Room Rent";
+        $transection->status = 'credit';
+        $transection->save();
+
+
         $request->session()->flash('success', " Fees Updated successfully.");
         return response()->json([
             'status' => true,
@@ -272,7 +291,10 @@ class FeeController extends Controller
                 'message' => 'Fee Not Found'
             ]);
         }
-
+        $transection = Transection::where('transection_type_id', $fee_id)->first();
+        if ($transection) {
+            $transection->delete();
+        }
         $fee->delete();
 
         $request->session()->flash('success', 'Fee Deleted Successfully');

@@ -28,6 +28,7 @@ class RoomController extends Controller
 
         if ($validator->passes()) {
             $room = new Room();
+
             $room->room_name = $request->room_name;
             $room->floor_id = $request->floor_id;
             $room->room_type = $request->room_type;
@@ -36,7 +37,17 @@ class RoomController extends Controller
 
             $room->save();
 
-
+            $request->session()->flash('success', 'Room Added Successfully');
+            return response()->json([
+                'status' => true,
+                'message' => 'Room Added successfully'
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
     }
     public function index(Request $request)
     {

@@ -6,10 +6,12 @@ use App\Models\Room;
 use App\Models\Registration;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Floor extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $fillable = [
         'room_name', 'floor_id', 'room_type', 'no_of_seats', 'status',
     ];
