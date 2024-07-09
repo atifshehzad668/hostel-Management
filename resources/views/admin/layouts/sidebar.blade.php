@@ -12,126 +12,75 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
-         with font-awesome or any other icon font library -->
+                     with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="dashboard.html" class="nav-link">
+                    <a href="dashboard.html" class="nav-link {{ Request::is('dashboard*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('floor.index') }}" class="nav-link">
-                        <i class="fas fa-hotel"></i>
 
-                        <p>Floors</p>
-                    </a>
-                </li>
                 <li class="nav-item">
-                    <a href="{{ route('rooms.index') }}" class="nav-link">
-                        <i class="fas fa-door-open"></i>
-
-                        <p>Rooms</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('registration.index') }}" class="nav-link">
+                    <a href="{{ route('registration.index') }}" class="nav-link {{ Request::is('registration*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user"></i>
-
-                        <p>Register</p>
+                        <p>Registration</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('fee.index') }}" class="nav-link">
+                    <a href="{{ route('fee.index') }}" class="nav-link {{ Request::is('fee*') ? 'active' : '' }}">
                         <i class="fas fa-dollar-sign"></i>
-
-
                         <p>Apply Fees</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('user_fee.list') }}" class="nav-link">
+                    <a href="{{ route('user_fee.list') }}" class="nav-link {{ Request::is('user_fee*') ? 'active' : '' }}">
                         <i class="fas fa-list"></i>
-
-                        <p> Fee List</p>
+                        <p>Fee List</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('expense_head.index') }}" class="nav-link">
-                        <i class="fas fa-tags"></i>
-
-                        <p> Expense Head</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('expense.index') }}" class="nav-link">
+                    <a href="{{ route('expense.index') }}" class="nav-link {{ Request::is('expense*') ? 'active' : '' }}">
                         <i class="fas fa-receipt"></i>
-
-
-                        <p> Expense </p>
+                        <p>Expenses</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('staff.index') }}" class="nav-link">
+                    <a href="{{ route('staff.index') }}" class="nav-link {{ Request::is('staff*') ? 'active' : '' }}">
                         <i class="fas fa-user-tie"></i>
-
-                        <p> Staff </p>
-                    </a>
-                </li>
-                {{-- <li class="nav-item">
-                    <a href="" class="nav-link">
-                        <i class="nav-icon fas fa-file-alt"></i>
-                        <p>Sub Category</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href=""class="nav-link">
-                        <svg class="h-6 nav-icon w-6 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M16 4v12l-4-2-4 2V4M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                        <p>Brands</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="" class="nav-link">
-                        <i class="nav-icon fas fa-tag"></i>
-                        <p>Products</p>
+                        <p>Staff</p>
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="" class="nav-link">
-                        <!-- <i class="nav-icon fas fa-tag"></i> -->
-                        <i class="fas fa-truck nav-icon"></i>
-                        <p>Shipping</p>
+                <!-- Settings Menu -->
+                <li class="nav-item has-treeview {{ Request::is('floor*') || Request::is('rooms*') || Request::is('expense_head*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Request::is('floor*') || Request::is('rooms*') || Request::is('expense_head*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-cogs"></i>
+                        <p>
+                            Settings
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('floor.index') }}" class="nav-link {{ Request::is('floor*') ? 'active' : '' }}">
+                                <i class="fas fa-hotel nav-icon"></i>
+                                <p>Floors</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('rooms.index') }}" class="nav-link {{ Request::is('rooms*') ? 'active' : '' }}">
+                                <i class="fas fa-door-open nav-icon"></i>
+                                <p>Rooms</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('expense_head.index') }}" class="nav-link {{ Request::is('expense_head*') ? 'active' : '' }}">
+                                <i class="fas fa-tags nav-icon"></i>
+                                <p>Expense Head</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="orders.html" class="nav-link">
-                        <i class="nav-icon fas fa-shopping-bag"></i>
-                        <p>Orders</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="discount.html" class="nav-link">
-                        <i class="nav-icon  fa fa-percent" aria-hidden="true"></i>
-                        <p>Discount</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="users.html" class="nav-link">
-                        <i class="nav-icon  fas fa-users"></i>
-                        <p>Users</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="pages.html" class="nav-link">
-                        <i class="nav-icon  far fa-file-alt"></i>
-                        <p>Pages</p>
-                    </a>
-                </li> --}}
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

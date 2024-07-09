@@ -93,7 +93,11 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
 
-            <strong>Copyright &copy; 2014-2022 AmazingShop All rights reserved.
+            <strong>Copyright &copy; 
+                <script>
+                    document.write(new Date().getFullYear())
+                </script>
+                <a href="#">{{ env('APP_NAME') }}</a>.</strong> All rights reserved.
         </footer>
 
     </div>
@@ -136,9 +140,9 @@
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script> --}}
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
 
-    @yield('customjs');
+    @yield('customjs')
 </body>
 
 </html>

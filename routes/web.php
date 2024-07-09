@@ -6,13 +6,14 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoomController;
 
 use App\Http\Controllers\FloorController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\CommonController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\ExpenseHeadController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\RecivedPaymentController;
-use App\Http\Controllers\StaffController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -119,6 +120,16 @@ Route::prefix('admin')->group(function () {
         Route::get('staff/edit/{id}', [StaffController::class, 'edit'])->name('staff.edit');
         Route::post('staff/update/{id}', [StaffController::class, 'update'])->name('staff.update');
         Route::delete('staff/delete/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
+
+
+
+
+
+
+
+
+        // common
+        Route::get('backup', [CommonController::class, 'backup'])->name('backup');
     });
 });
 
