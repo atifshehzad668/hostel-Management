@@ -26,7 +26,7 @@
                         <p>Registration</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('fee.index') }}" class="nav-link {{ Request::is('fee*') ? 'active' : '' }}">
                         <i class="fas fa-dollar-sign"></i>
                         <p>Apply Fees</p>
@@ -49,7 +49,7 @@
                         <i class="fas fa-user-tie"></i>
                         <p>Staff</p>
                     </a>
-                </li>
+                </li> --}}
 
                 <!-- Settings Menu -->
                 <li class="nav-item has-treeview {{ Request::is('floor*') || Request::is('rooms*') || Request::is('expense_head*') ? 'menu-open' : '' }}">
