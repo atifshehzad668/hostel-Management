@@ -15,23 +15,28 @@ use App\Http\Controllers\ExpenseHeadController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\RecivedPaymentController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // Route::get('admin/login', [AdminLoginController::class, 'index'])->name('admin.login');
 // Route::post('admin/authenticate', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
 
+// redirect login to admin/login
+Route::get('/login', function () {
+    return redirect()->route('admin.login');
+});
 
 
-Route::prefix('admin')->group(function () {
-    Route::middleware('admin.guest')->group(function () {
+
+Route::prefix('')->group(function () {
+    // Route::middleware('admin.guest')->group(function () {
         Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
         Route::post('/authenticate', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
-    });
+    // });
 
     Route::middleware('admin.auth')->group(function () {
-        Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
+        Route::get('/', [HomeController::class, 'index'])->name('admin.dashboard');
         Route::get('/logout', [HomeController::class, 'logout'])->name('admin.logout');
 
 
@@ -158,4 +163,4 @@ Route::middleware('auth')->group(function () {
 
 
 
-require __DIR__ . '/auth.php';
+// require __DIR__ . '/auth.php';

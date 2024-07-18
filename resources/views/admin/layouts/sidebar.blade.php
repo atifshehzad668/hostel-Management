@@ -14,7 +14,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="dashboard.html" class="nav-link {{ Request::is('dashboard*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.dashboard')}}" class="nav-link {{ Request::is('dashboard*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
@@ -28,25 +28,25 @@
                 </li>
                 {{-- <li class="nav-item">
                     <a href="{{ route('fee.index') }}" class="nav-link {{ Request::is('fee*') ? 'active' : '' }}">
-                        <i class="fas fa-dollar-sign"></i>
+                        <i class="nav-icon fas fa-money-bill-wave"></i>
                         <p>Apply Fees</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('user_fee.list') }}" class="nav-link {{ Request::is('user_fee*') ? 'active' : '' }}">
-                        <i class="fas fa-list"></i>
+                        <i class="nav-icon fas fa-money-bill-wave"></i>
                         <p>Fee List</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('expense.index') }}" class="nav-link {{ Request::is('expense*') ? 'active' : '' }}">
-                        <i class="fas fa-receipt"></i>
+                        <i class="nav-icon fas fa-receipt"></i>
                         <p>Expenses</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('staff.index') }}" class="nav-link {{ Request::is('staff*') ? 'active' : '' }}">
-                        <i class="fas fa-user-tie"></i>
+                        <i class="nav-icon fas fa-users"></i>
                         <p>Staff</p>
                     </a>
                 </li> --}}
