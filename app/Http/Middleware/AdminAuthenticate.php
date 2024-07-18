@@ -10,6 +10,8 @@ class AdminAuthenticate extends Middleware
     protected function redirectTo(Request $request): ?string
     {
         return $request->expectsJson() ? null : route('login');
+
+        
     }
 
     protected function authenticate($request, array $guards)
