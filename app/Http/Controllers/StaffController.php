@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Staff;
-use Illuminate\Http\Request;
 use DataTables;
+use Carbon\Carbon;
+use App\Models\Staff;
+use App\Models\Transection;
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class StaffController extends Controller
@@ -52,12 +55,12 @@ class StaffController extends Controller
                                             clip-rule="evenodd"></path>
                                     </svg>
                                 </a>';
+                    $pay =  '<a href="" class="btn btn-sm btn-success pay_button" data-id="' . $row->id . '">Pay</a>';
 
 
 
 
-
-                    $btn = $editBtn . $deleteBtn;
+                    $btn = $editBtn . $deleteBtn . $pay;
 
                     return $btn;
                 })
@@ -207,5 +210,44 @@ class StaffController extends Controller
             'status' => true,
             'message' => 'Staff Deleted Successfully'
         ]);
+    }
+
+
+
+
+
+
+
+
+
+    public function get_staff(Request $request)
+    {
+        $id = $request->input('id');
+        $staff = Staff::where("id", $id)->first();
+        return response()->json(['staff' => $staff]);
+    }
+
+
+    public function pay_staff(Request $request)
+    {
+        $staff = Staff::find($request->id);
+
+        if ($staff) {
+
+
+
+            Transection::create([
+                'transection_type_id' => $staff->id,
+                'amount' => $request->paid_amount,
+                'transection_date' => Carbon::now(),
+                'description' => 'staff payment',
+                'transection_type' => 'Staff',
+                'status' => 'debit',
+            ]);
+            session()->flash('success', 'staff Paid Successfully');
+            return response()->json(['status' => true, 'message' => 'staff Paid Successfully.']);
+        }
+
+        return response()->json(['status' => false, 'message' => 'staff not found.'], 404);
     }
 }

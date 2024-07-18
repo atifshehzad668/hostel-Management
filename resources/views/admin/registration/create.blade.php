@@ -35,7 +35,7 @@
                                 <div class="mb-3">
                                     <label for="father_name">Father name</label>
                                     <input type="text" name="father_name" id="father_name" class="form-control"
-                                        placeholder="father name">
+                                        placeholder="father name" autocomplete="off">
                                     <p class="text-danger"></p>
                                 </div>
                             </div>
@@ -59,6 +59,14 @@
                                     <select name="room_id" id="rooms" class="form-control">
 
                                     </select>
+                                    <p class="text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="amount">Amount </label>
+                                    <input type="text" name="amount" id="amount" class="form-control"
+                                        placeholder="amount ">
                                     <p class="text-danger"></p>
                                 </div>
                             </div>
@@ -170,178 +178,131 @@
                     if (response["status"] == true) {
                         window.location.href = "{{ route('registration.index') }}";
                         $("#name").removeClass('is-invalid').siblings('p').removeClass(
-                                'invalid-feedback')
-                            .html("");
+                            'invalid-feedback').html("");
                         $("#father_name").removeClass('is-invalid').siblings('p').removeClass(
-                                'invalid-feedback')
-                            .html("");
+                            'invalid-feedback').html("");
                         $("#floor").removeClass('is-invalid').siblings('p').removeClass(
-                                'invalid-feedback')
-                            .html("");
+                            'invalid-feedback').html("");
                         $("#room_id").removeClass('is-invalid').siblings('p').removeClass(
-                                'invalid-feedback')
-                            .html("");
-
+                            'invalid-feedback').html("");
                         $("#cnic").removeClass('is-invalid').siblings('p').removeClass(
-                                'invalid-feedback')
-                            .html("");
+                            'invalid-feedback').html("");
+                        $("#amount").removeClass('is-invalid').siblings('p').removeClass(
+                            'invalid-feedback').html("");
                         $("#address").removeClass('is-invalid').siblings('p').removeClass(
-                                'invalid-feedback')
-                            .html("");
+                            'invalid-feedback').html("");
                         $("#registration_date").removeClass('is-invalid').siblings('p').removeClass(
-                                'invalid-feedback')
-                            .html("");
+                            'invalid-feedback').html("");
                         $("#phone_no").removeClass('is-invalid').siblings('p').removeClass(
-                                'invalid-feedback')
-                            .html("");
+                            'invalid-feedback').html("");
                         $("#whatsapp_no").removeClass('is-invalid').siblings('p').removeClass(
-                                'invalid-feedback')
-                            .html("");
+                            'invalid-feedback').html("");
                         $("#dob").removeClass('is-invalid').siblings('p').removeClass(
-                                'invalid-feedback')
-                            .html("");
+                            'invalid-feedback').html("");
                         $("#email").removeClass('is-invalid').siblings('p').removeClass(
-                                'invalid-feedback')
-                            .html("");
+                            'invalid-feedback').html("");
                         $("#status").removeClass('is-invalid').siblings('p').removeClass(
-                                'invalid-feedback')
-                            .html("");
+                            'invalid-feedback').html("");
                     } else {
                         var errors = response['errors'];
                         if (errors['name']) {
-                            $("#name").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback')
+                            $("#name").addClass('is-invalid').siblings('p').addClass('invalid-feedback')
                                 .html(errors['name']);
                         } else {
                             $("#name").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback')
-                                .html("");
-
+                                'invalid-feedback').html("");
                         }
                         if (errors['father_name']) {
                             $("#father_name").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback')
-                                .html(errors['father_name']);
+                                'invalid-feedback').html(errors['father_name']);
                         } else {
                             $("#father_name").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback')
-                                .html("");
-
+                                'invalid-feedback').html("");
                         }
-
                         if (errors['cnic']) {
-                            $("#cnic").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback')
+                            $("#cnic").addClass('is-invalid').siblings('p').addClass('invalid-feedback')
                                 .html(errors['cnic']);
                         } else {
                             $("#cnic").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback')
-                                .html("");
-
+                                'invalid-feedback').html("");
+                        }
+                        if (errors['amount']) {
+                            $("#amount").addClass('is-invalid').siblings('p').addClass(
+                                'invalid-feedback').html(errors['amount']);
+                        } else {
+                            $("#amount").removeClass('is-invalid').siblings('p').removeClass(
+                                'invalid-feedback').html("");
                         }
                         if (errors['address']) {
                             $("#address").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback')
-                                .html(errors['address']);
+                                'invalid-feedback').html(errors['address']);
                         } else {
                             $("#address").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback')
-                                .html("");
-
+                                'invalid-feedback').html("");
                         }
                         if (errors['registration_date']) {
                             $("#registration_date").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback')
-                                .html(errors['registration_date']);
+                                'invalid-feedback').html(errors['registration_date']);
                         } else {
                             $("#registration_date").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback')
-                                .html("");
-
+                                'invalid-feedback').html("");
                         }
                         if (errors['phone_no']) {
                             $("#phone_no").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback')
-                                .html(errors['phone_no']);
+                                'invalid-feedback').html(errors['phone_no']);
                         } else {
                             $("#phone_no").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback')
-                                .html("");
-
+                                'invalid-feedback').html("");
                         }
                         if (errors['whatsapp_no']) {
                             $("#whatsapp_no").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback')
-                                .html(errors['whatsapp_no']);
+                                'invalid-feedback').html(errors['whatsapp_no']);
                         } else {
                             $("#whatsapp_no").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback')
-                                .html("");
-
+                                'invalid-feedback').html("");
                         }
                         if (errors['dob']) {
-                            $("#dob").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback')
+                            $("#dob").addClass('is-invalid').siblings('p').addClass('invalid-feedback')
                                 .html(errors['dob']);
                         } else {
                             $("#dob").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback')
-                                .html("");
-
+                                'invalid-feedback').html("");
                         }
                         if (errors['email']) {
                             $("#email").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback')
-                                .html(errors['email']);
+                                'invalid-feedback').html(errors['email']);
                         } else {
                             $("#email").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback')
-                                .html("");
-
+                                'invalid-feedback').html("");
                         }
                         if (errors['status']) {
                             $("#status").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback')
-                                .html(errors['status']);
+                                'invalid-feedback').html(errors['status']);
                         } else {
                             $("#status").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback')
-                                .html("");
-
+                                'invalid-feedback').html("");
                         }
                         if (errors['floor']) {
                             $("#floor").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback')
-                                .html(errors['floor']);
+                                'invalid-feedback').html(errors['floor']);
                         } else {
                             $("#floor").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback')
-                                .html("");
-
+                                'invalid-feedback').html("");
                         }
                         if (errors['room_id']) {
                             $("#room_id").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback')
-                                .html(errors['room_id']);
+                                'invalid-feedback').html(errors['room_id']);
                         } else {
                             $("#room_id").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback')
-                                .html("");
-
+                                'invalid-feedback').html("");
                         }
-
-
                     }
                 },
-                error: function() {
+                error: function(jqXHR, exception) {
                     console.log("Something Went Wrong");
                 }
             });
         });
-
-
-
-
         $("#floor").on('change', function() {
             var floor = $(this).val();
             $.ajax({
@@ -356,17 +317,26 @@
                     if (data.rooms.length > 0) {
                         var html = `<option value="">Select room....</option>`;
                         $.each(data.rooms, function(key, value) {
-                            html += `<option value="${value.id}">${value.room_name}</option>`;
+                            html +=
+                                `<option value="${value.id}">${value.room_name}</option>`;
                         });
                         $("#rooms").html(html);
                     } else {
-                        $("#rooms").html("<option value=''>No Rooms Available</option>");
+                        $("#rooms").html(
+                            "<option value=''>No Rooms Available</option>");
                     }
                 },
                 error: function(err) {
                     console.log(err.responseText)
                 }
             });
+        });
+
+        $('#reset-button').on('click', function() {
+            // $('#floor').val('');
+            $('#date').val('');
+            // $('#search_by_room').val('');
+            table.draw();
         });
     </script>
 @endsection

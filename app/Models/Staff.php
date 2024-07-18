@@ -12,4 +12,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Staff extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia, SoftDeletes;
+
+
+    /**
+     * Get all of the comments for the Staff
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function transections()
+    {
+        return $this->hasMany(Transection::class);
+    }
 }

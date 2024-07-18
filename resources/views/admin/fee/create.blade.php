@@ -1,151 +1,292 @@
 @extends('admin.layouts.app')
 @section('content')
-    <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid my-2">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Generate Fee</h1>
-                </div>
-                <div class="col-sm-6 text-right">
-                    <a href="" class="btn btn-primary">Back</a>
+                    <h1>Students Fee</h1>
                 </div>
             </div>
         </div>
-        <!-- /.container-fluid -->
     </section>
-    <!-- Main content -->
     <section class="content">
-        <!-- Default box -->
-        <div class="container-fluid">
-            @include('admin.message')
-            <form id="FeeForm" enctype="multipart/form-data" name="FeeForm">
-                @csrf
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
 
 
-                            <input type="hidden" name="user_id" id="user_id" value="{{ $registration->id }}">
-
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="fee_date">Fee Date </label>
-                                    <input type="date" name="fee_date" id="fee_date" class="form-control"
-                                        placeholder="fee_date ">
-                                    <p class="text-danger"></p>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="amount">Amount </label>
-                                    <input type="number" name="amount" id="amount" class="form-control"
-                                        placeholder="Amount">
-                                    <p class="text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="paid_amount">Paid Amount </label>
-                                    <input type="number" name="paid_amount" id="paid_amount" class="form-control"
-                                        placeholder="Paid Amount">
-                                    <p class="text-danger"></p>
-                                </div>
-                            </div>
-
-
-
-
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="name">Status</label>
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="Unpaid">Unpaid</option>
-                                        <option value="Paid">Paid</option>
-                                        <option value="Partially-paid">Partially-paid</option>
-                                    </select>
-                                    <p class="text-danger"></p>
-                                </div>
-                            </div>
-
-                        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="payfee" tabindex="-1" role="dialog" aria-labelledby="payfee" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Pay Fee</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="">Paid Amount</label>
+                        <input type="text" class="form-control" name="paid_amount" id="paid_amount">
+                        <input type="hidden" class="form-control" name="registration_id" id="registration_id">
+                        <input type="date" class="form-control d-none" name="fee_date" id="fee_date">
+                        <input type="hidden" class="form-control" name="amount" id="amount">
+                        <input type="hidden" class="form-control" name="fee_id" id="fee_id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary payFee">Save changes</button>
                     </div>
                 </div>
-                <div class="pb-5 pt-3">
-                    <button type="submit" class="btn btn-primary">Create</button>
-                    <a href="" class="btn btn-outline-dark ml-3">Cancel</a>
-                </div>
-            </form>
-
+            </div>
         </div>
-        <!-- /.card -->
-    </section>
-    <!-- /.content -->
-@endsection
 
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="button" onclick="window.location.href='{{ route('fee.create') }}'"
+                        class="btn btn-default btn-sm">Reset</button>
+
+                </div>
+            </div>
+            @include('admin.message')
+            <div class="card">
+                <form id="feeGenarate">
+                    @csrf
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="date" id="date" name="date" class="form-control"
+                                    placeholder="Search by Date">
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-primary payFee" type="submit" id="submit">Generate fee</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="filterbyname"
+                                        placeholder="Filter By Name">
+                                </div>
+                                <div class="col-md-8">
+                                    <form action="">
+                                        <div class="row">
+
+
+
+
+
+                                            <div class="col-md-3">
+                                                <input type="date" class="form-control" id="start_date">
+                                            </div>
+
+
+
+
+                                            <div class="col-md-3">
+                                                <input type="date" class="form-control" id="end_date">
+                                            </div>
+
+
+                                            <div class="col-md-3">
+                                                <button class="btn btn-primary" type="submit" id="datebetween">Date
+                                                    Between</button>
+                                            </div>
+
+
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="card-body">
+                <table id="mytable" class="table table-bordered data-table">
+                    <thead>
+                        <tr>
+                            <th width="60">ID</th>
+                            <th>Registered Student</th>
+                            <th>Fee Date</th>
+                            <th>Amount</th>
+                            <th>Paid Amount</th>
+                            <th>Status</th>
+                            <th width="100">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+@endsection
 
 @section('customjs')
     <script>
-        $("#FeeForm").submit(function(event) {
-            event.preventDefault();
-            var element = $(this);
-            $("button[type=submit]").prop('disabled', true);
+        $(document).ready(function() {
+            $("#feeGenarate").submit(function(event) {
+                event.preventDefault();
+                $("#submit").prop("disabled", true);
 
-            $.ajax({
-                url: '{{ route('fee.insert') }}',
-                type: 'POST',
-                data: element.serializeArray(),
-                dataType: 'json',
-                success: function(response) {
-                    $("button[type=submit]").prop('disabled', false);
-                    if (response.status === true) {
-                        window.location.href = "{{ route('user_fee.list') }}";
-                    } else {
-                        if (response.message && response.message.includes('fees for')) {
+                var dateValue = $("#date").val();
+                var formData = new FormData();
+                formData.append("date", dateValue);
 
-                            window.location.reload();
-                        } else {
-                            // Handle other validation errors
-                            var errors = response.errors;
-                            if (errors.fee_date) {
-                                $("#fee_date").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback').html(errors.fee_date);
-                            } else {
-                                $("#fee_date").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback').html("");
-                            }
-
-                            if (errors.amount) {
-                                $("#amount").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback').html(errors.amount);
-                            } else {
-                                $("#amount").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback').html("");
-                            }
-                            if (errors.paid_amount) {
-                                $("#paid_amount").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback').html(errors.paid_amount);
-                            } else {
-                                $("#paid_amount").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback').html("");
-                            }
-
-
-
-                            if (errors.status) {
-                                $("#status").addClass('is-invalid').siblings('p').addClass(
-                                    'invalid-feedback').html(errors.status);
-                            } else {
-                                $("#status").removeClass('is-invalid').siblings('p').removeClass(
-                                    'invalid-feedback').html("");
-                            }
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('generate_fee') }}",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        window.location.href = "{{ route('fee.create') }}";
+                    },
+                    error: function(e) {
+                        console.log(e.responseText);
+                        $("#submit").prop("disabled", false);
+                        if (e.responseJSON && !e.responseJSON.status) {
+                            window.location.href = "{{ route('fee.create') }}";
                         }
                     }
+                });
+            });
+
+            var table = $('.data-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('fee.index') }}",
+                    data: function(d) {
+                        d.name = $('#filterbyname').val();
+                        d.start_date = $('#start_date').val();
+                        d.end_date = $('#end_date').val();
+                    }
                 },
-                error: function() {
-                    // Redirect to fee index page on error
-                    window.location.href = "{{ route('fee.index') }}";
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'registration.name',
+                        name: 'registration.name'
+                    },
+                    {
+                        data: 'fee_date',
+                        name: 'fee_date'
+                    },
+                    {
+                        data: 'amount',
+                        name: 'amount'
+                    },
+                    {
+                        data: 'paid_amount',
+                        name: 'paid_amount'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ]
+            });
+
+            $('#filterbyname').on('keyup', function() {
+                table.ajax.reload();
+            });
+            $('#datebetween').on('click', function(e) {
+                e.preventDefault();
+                table.ajax.reload();
+            });
+        });
+
+        $('#reset-button').on('click', function() {
+            $('#start_date').val('');
+            $('#end_date').val('');
+            table.draw();
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            $("#mytable").on("click", ".pay_button", function(event) {
+                event.preventDefault();
+                var id = $(this).attr('data-id');
+                $("#payfee").modal('show');
+                $.ajax({
+                    type: "GET",
+                    url: '{{ route('get.fee') }}',
+                    data: {
+                        id: id
+                    },
+                    success: function(data) {
+
+                        var fee = data.fee;
+
+
+                        $('#paid_amount').val('');
+                        $('#registration_id').val(fee.registration_id);
+                        $('#fee_date').val(fee.fee_date);
+                        $('#amount').val(fee.amount);
+                        $('#fee_id').val(fee.id);
+                    },
+                    error: function(e) {
+                        console.log(e.responseText);
+                    }
+                });
+            });
+        });
+
+
+
+
+
+        $("#payfee").on("click", ".payFee", function() {
+            var feeId = $('#fee_id').val();
+            var updatedata = {
+                'id': feeId,
+                'paid_amount': $('#paid_amount').val(),
+                'registration_id': $('#registration_id').val(),
+                'fee_date': $('#fee_date').val(),
+                'amount': $('#amount').val(),
+            };
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('pay.fee') }}",
+                data: updatedata,
+                success: function(data) {
+
+
+
+                    $("#payfee").modal('hide');
+                    window.location.href = "{{ route('fee.create') }}";
+
+                },
+                error: function(e) {
+
+                    console.log('Error:', e.responseText);
                 }
             });
         });

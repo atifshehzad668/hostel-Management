@@ -21,25 +21,28 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('registration.index') }}" class="nav-link {{ Request::is('registration*') ? 'active' : '' }}">
+                    <a href="{{ route('registration.index') }}"
+                        class="nav-link {{ Request::is('registration*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user"></i>
                         <p>Registration</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('fee.index') }}" class="nav-link {{ Request::is('fee*') ? 'active' : '' }}">
                         <i class="fas fa-dollar-sign"></i>
                         <p>Apply Fees</p>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('user_fee.list') }}" class="nav-link {{ Request::is('user_fee*') ? 'active' : '' }}">
+                </li> --}}
+                {{-- <li class="nav-item">
+                    <a href="{{ route('user_fee.list') }}"
+                        class="nav-link {{ Request::is('user_fee*') ? 'active' : '' }}">
                         <i class="fas fa-list"></i>
                         <p>Fee List</p>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
-                    <a href="{{ route('expense.index') }}" class="nav-link {{ Request::is('expense*') ? 'active' : '' }}">
+                    <a href="{{ route('expense.index') }}"
+                        class="nav-link {{ Request::is('expense*') ? 'active' : '' }}">
                         <i class="fas fa-receipt"></i>
                         <p>Expenses</p>
                     </a>
@@ -52,8 +55,10 @@
                 </li>
 
                 <!-- Settings Menu -->
-                <li class="nav-item has-treeview {{ Request::is('floor*') || Request::is('rooms*') || Request::is('expense_head*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ Request::is('floor*') || Request::is('rooms*') || Request::is('expense_head*') ? 'active' : '' }}">
+                <li
+                    class="nav-item has-treeview {{ Request::is('floor*') || Request::is('rooms*') || Request::is('expense_head*') ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ Request::is('floor*') || Request::is('rooms*') || Request::is('expense_head*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-cogs"></i>
                         <p>
                             Settings
@@ -62,19 +67,22 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('floor.index') }}" class="nav-link {{ Request::is('floor*') ? 'active' : '' }}">
+                            <a href="{{ route('floor.index') }}"
+                                class="nav-link {{ Request::is('floor*') ? 'active' : '' }}">
                                 <i class="fas fa-hotel nav-icon"></i>
                                 <p>Floors</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('rooms.index') }}" class="nav-link {{ Request::is('rooms*') ? 'active' : '' }}">
+                            <a href="{{ route('rooms.index') }}"
+                                class="nav-link {{ Request::is('rooms*') ? 'active' : '' }}">
                                 <i class="fas fa-door-open nav-icon"></i>
                                 <p>Rooms</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('expense_head.index') }}" class="nav-link {{ Request::is('expense_head*') ? 'active' : '' }}">
+                            <a href="{{ route('expense_head.index') }}"
+                                class="nav-link {{ Request::is('expense_head*') ? 'active' : '' }}">
                                 <i class="fas fa-tags nav-icon"></i>
                                 <p>Expense Head</p>
                             </a>

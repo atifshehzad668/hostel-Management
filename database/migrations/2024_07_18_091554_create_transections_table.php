@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fees', function (Blueprint $table) {
+        Schema::create('transections', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('registration_id');
-            $table->date('fee_date')->default(date('Y-m-01'));
+            $table->unsignedBigInteger('transection_type_id');
             $table->decimal('amount', 10, 2);
-            $table->decimal('paid_amount', 10, 2);
-
-            $table->string('status')->default('Unpaid');
+            $table->date('transection_date');
+            $table->string('description');
+            $table->string('status');
+            $table->string('transection_type');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fees');
+        Schema::dropIfExists('transections');
     }
 };

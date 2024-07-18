@@ -62,14 +62,13 @@ Route::prefix('admin')->group(function () {
 
 
         // Fee Routes
-
+        Route::get('/fee/create', [FeeController::class, 'create'])->name('fee.create');
+        Route::post('/fee/store', [FeeController::class, 'store'])->name('generate_fee');
         Route::get('/fee/index', [FeeController::class, 'index'])->name('fee.index');
-        Route::get('/generate/fee/{id}', [FeeController::class, 'generate_fee'])->name('fee.generate');
-        Route::post('/fee/store', [FeeController::class, 'store_fee'])->name('fee.insert');
-        Route::get('/user_fee/list', [FeeController::class, 'user_fee_list'])->name('user_fee.list');
-        Route::get('/user_fee/edit/{id}', [FeeController::class, 'user_fee_edit'])->name('user_fee.edit');
-        Route::post('/user_fee/update/{id}', [FeeController::class, 'user_fee_update'])->name('user_fee.update');
-        Route::delete('/user_fee/destroy/{id}', [FeeController::class, 'user_fee_destroy'])->name('user_fee.destroy');
+        Route::get('/fee/filterby_feedate', [FeeController::class, 'filterby_feedate'])->name('filterby_feedate');
+
+        Route::get('/get/fee', [FeeController::class, 'get_fee'])->name('get.fee');
+        Route::post('/pay/fee', [FeeController::class, 'pay_fee'])->name('pay.fee');
 
 
 
@@ -123,7 +122,8 @@ Route::prefix('admin')->group(function () {
 
 
 
-
+        Route::get('/get/staff',[StaffController::class,'get_staff'])->name('staff.get_staff');
+        Route::post('/pay/staff',[StaffController::class,'pay_staff'])->name('staff.pay_staff');
 
 
 

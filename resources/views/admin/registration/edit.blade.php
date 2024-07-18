@@ -69,6 +69,13 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
+                                    <label for="amount">Amount</label>
+                                    <input type="number" name="amount" id="amount" class="form-control"
+                                        placeholder="amount" value="{{ $registration->amount ?? '' }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
                                     <label for="cnic">Cnic</label>
                                     <input type="number" name="cnic" id="cnic" class="form-control"
                                         placeholder="Cnic" value="{{ $registration->cnic ?? '' }}">

@@ -25,6 +25,8 @@ class Registration extends Model implements HasMedia
             ->performOnCollections('images')
             ->nonQueued();
     }
+    protected $guarded = ['id'];
+
     public function floor()
     {
         return $this->belongsTo(Floor::class);

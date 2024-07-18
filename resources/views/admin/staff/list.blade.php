@@ -23,6 +23,34 @@
     </section>
     <!-- Main content -->
     <section class="content">
+
+        <div class="modal fade" id="pay_to_staff" tabindex="-1" role="dialog" aria-labelledby="pay_to_staff"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Pay to Staff</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="">Paid Amount</label>
+                        <input type="text" class="form-control" name="paid_amount" id="paid_amount">
+                        <input type="hidden" class="form-control" name="name" id="name">
+                        <input type="hidden" class="form-control" name="registration_id" id="father_name">
+                        <input type="hidden" class="form-control" name="cnic" id="cnic">
+                        <input type="hidden" class="form-control" name="amount" id="address">
+                        <input type="hidden" class="form-control" name="phone_no" id="phone_no">
+                        <input type="hidden" class="form-control" name="staff_id" id="staff_id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary staff_payment">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Default box -->
         <div class="container-fluid">
             @include('admin.message')
@@ -48,7 +76,7 @@
                     </div>
                 </form>
                 <div class="card-body">
-                    <table class="table table-bordered data-table ">
+                    <table class="table table-bordered data-table " id="mytable">
                         <thead>
                             <tr>
                                 <th width="60">ID</th>
@@ -146,5 +174,83 @@
                 });
             }
         }
+    </script>
+
+
+
+
+
+
+
+    <script>
+        $(document).ready(function() {
+            $("#mytable").on("click", ".pay_button", function(event) {
+                event.preventDefault();
+                var id = $(this).attr('data-id');
+                $("#pay_to_staff").modal('show');
+                $.ajax({
+                    type: "GET",
+                    url: '{{ route('staff.get_staff') }}',
+                    data: {
+                        id: id
+                    },
+                    success: function(data) {
+
+                        var staff = data.staff;
+
+
+                        $('#name').val(staff.name);
+                        $('#father_name').val(staff.father_name);
+                        $('#cnic').val(staff.cnic);
+                        $('#address').val(staff.address);
+                        $('#phone_no').val(staff.phone_no);
+                        $('#staff_id').val(staff.id);
+                    },
+                    error: function(e) {
+                        console.log(e.responseText);
+                    }
+                });
+            });
+        });
+
+
+
+
+        $("#pay_to_staff").on("click", ".staff_payment", function() {
+            var staffId = $('#staff_id').val();
+            var updatedata = {
+                'id': staffId,
+                'paid_amount': $('#paid_amount').val(),
+                'name': $('#name').val(),
+                'father_name': $('#father_name').val(),
+                'address': $('#address').val(),
+                'phone_no': $('#phone_no').val(),
+                'cnic': $('#cnic').val(),
+            };
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('staff.pay_staff') }}",
+                data: updatedata,
+                success: function(data) {
+
+
+
+                    $("#pay_to_staff").modal('hide');
+                    window.location.href = "{{ route('staff.index') }}";
+
+                },
+                error: function(e) {
+
+                    console.log('Error:', e.responseText);
+                }
+            });
+        });
     </script>
 @endsection

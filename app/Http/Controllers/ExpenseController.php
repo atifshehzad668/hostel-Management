@@ -41,6 +41,7 @@ class ExpenseController extends Controller
             $transection->amount = $expense->amount;
             $transection->transection_date = $expense->paying_date;
             $transection->description = $expense->description;
+            $transection->transection_type = 'Expense';
             $transection->status = 'debit';
             $transection->save();
 

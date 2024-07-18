@@ -14,72 +14,57 @@ use Illuminate\Support\Facades\Validator;
 
 class FeeController extends Controller
 {
-    public function generate_fee(Request $request, $id)
+
+    public function create()
     {
-        $registration = Registration::find($id);
-        return view('admin.fee.create', compact('registration'));
+        return view('admin.fee.create');
     }
 
-    public function store_fee(Request $request)
+    public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:registrations,id',
-            'fee_date' => 'required|date',
-            'amount' => 'required|numeric',
-            'paid_amount' => 'required|numeric',
-
+        $request->validate([
+            'date' => 'required|date'
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
-            ]);
-        }
+        $date = Carbon::parse($request->date);
+        $month = $date->month;
+        $year = $date->year;
+        $startOfMonth = $date->startOfMonth();
 
-        // Retrieve user details
-        $user = Registration::findOrFail($request->user_id);
-        $userName = $user->name;
+        $existingFees = Fee::whereYear('fee_date', $year)
+            ->whereMonth('fee_date', $month)
+            ->exists();
 
-        $feeDate = Carbon::parse($request->fee_date);
-        $monthName = $feeDate->format('F');
-        $year = $feeDate->format('Y');
-
-        $existingFee = Fee::where('registration_id', $request->user_id)
-            ->whereMonth('fee_date', $feeDate->month)
-            ->whereYear('fee_date', $year)
-            ->first();
-
-        if ($existingFee) {
-            $request->session()->flash('error', "{$userName}'s fees for {$monthName} {$year} have already been issued.");
+        if ($existingFees) {
+            $errorMessage = "Fees for the selected month and year ({$month}/{$year}) have already been generated.";
+            session()->flash('error', $errorMessage);
 
             return response()->json([
                 'status' => false,
-                'message' => "{$userName}'s fees for {$monthName} {$year} have already been issued."
+                'message' => $errorMessage
             ]);
         }
 
-        $fee = new Fee();
-        $fee->registration_id = $request->user_id;
-        $fee->fee_date = $request->fee_date;
-        $fee->amount = $request->amount;
-        $fee->paid_amount = $request->paid_amount;
-        $fee->status = $request->status;
-        $fee->save();
+        $registrations = Registration::all();
 
 
-        $transection = new Transection();
-        $transection->transection_type_id = $fee->id;
-        $transection->amount = $fee->amount;
-        $transection->transection_date = $fee->fee_date;
-        $transection->description = "Fee for Room Rent";
-        $transection->status = 'credit';
-        $transection->save();
+        foreach ($registrations as $registration) {
+            Fee::create([
+                'registration_id' => $registration->id,
+                'fee_date' => $startOfMonth,
+                'amount' => $registration->amount,
+                'paid_amount' => 0,
+                'status' => 'Unpaid',
+                'deleted_at' => null,
+            ]);
+        }
 
-        $request->session()->flash('success', "{$userName}'s {$monthName} {$year} fees submitted successfully.");
+        $successMessage = "Fees generated successfully for the selected month and year ({$month}/{$year}).";
+        session()->flash('success', $successMessage);
+
         return response()->json([
             'status' => true,
-            'message' => "{$userName}'s {$monthName} {$year} fees submitted successfully."
+            'message' => $successMessage
         ]);
     }
 
@@ -88,219 +73,72 @@ class FeeController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Registration::with(['floor', 'room']);
+            $query = Fee::with('registration');
 
-            if ($request->filled('floor_id')) {
-                $query->where('floor_id', $request->input('floor_id'));
-            }
-
-            if ($request->filled('search_by_room')) {
-                $query->whereHas('room', function ($subquery) use ($request) {
-                    $subquery->where('room_name', 'like', '%' . $request->input('search_by_room') . '%');
+            if ($request->has('name') && !empty($request->name)) {
+                $query->whereHas('registration', function ($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request->name . '%');
                 });
             }
 
-            if ($request->filled('user')) {
-                $query->where('name', 'like', '%' . $request->input('user') . '%');
+            if ($request->has('start_date') && $request->has('end_date') && !empty($request->start_date) && !empty($request->end_date)) {
+                $start_date = Carbon::parse($request->start_date)->startOfDay();
+                $end_date = Carbon::parse($request->end_date)->endOfDay();
+                $query->whereBetween('fee_date', [$start_date, $end_date]);
             }
 
-            return DataTables::of($query)
+            return Datatables::of($query)
+                ->addIndexColumn()
+                ->addColumn('registration_name', function ($row) {
+                    return $row->registration->name;
+                })
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('user_fee.edit', $row->id);
-                    $feeUrl = route('fee.generate', $row->id);
-                    $editBtn = '<a href="' . $editUrl . '">
-                    <svg class="filament-link-icon w-4 h-4 mr-1"
-                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                        fill="currentColor" aria-hidden="true">
-                        <path
-                            d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z">
-                        </path>
-                    </svg>
-                </a>';
 
-
-                    //     $deleteBtn = '<a href="#" onclick="deleteFee(' . $row->id . ')" class="text-danger w-4 h-4 mr-1">
-                    //     <svg class="filament-link-icon w-4 h-4 mr-1"
-                    //         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                    //         fill="currentColor" aria-hidden="true">
-                    //         <path fill-rule="evenodd"
-                    //             d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                    //             clip-rule="evenodd"></path>
-                    //     </svg>
-                    // </a>';
-
-                    $registration_id = '<a href="' . $feeUrl . '" class="received_payment btn btn-success" value="pay" data-id="' . $row->id . '">' . "Pay" . '</a>';
-
-
-
-
-                    $btn = $editBtn  . $registration_id;
-
-                    return $btn;
+                    return '<a href="" class="btn btn-sm btn-success pay_button" data-id="' . $row->id . '">Pay</a>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
 
-        $floors = Floor::all();
-
-        return view('admin.fee.index', compact('floors'));
+        return view('admin.fee.create');
     }
 
-
-    public function user_fee_list(Request $request)
+    public function get_fee(Request $request)
     {
-        if ($request->ajax()) {
-            $query = Fee::with(['registration' => function ($q) {
-                $q->with(['floor', 'room']);
-            }]);
-
-            if ($request->filled('floor_id')) {
-                $query->whereHas('registration', function ($q) use ($request) {
-                    $q->where('floor_id', $request->input('floor_id'));
-                });
-            }
-
-            if ($request->filled('search_by_room')) {
-                $query->whereHas('registration.room', function ($q) use ($request) {
-                    $q->where('room_name', 'like', '%' . $request->input('search_by_room') . '%');
-                });
-            }
-
-            if ($request->filled('user')) {
-                $query->whereHas('registration', function ($q) use ($request) {
-                    $q->where('name', 'like', '%' . $request->input('user') . '%');
-                });
-            }
-
-            return DataTables::of($query)
-                ->addColumn('action', function ($row) {
-                    $editUrl = route('user_fee.edit', $row->id);
-
-                    $editBtn = '<a href="' . $editUrl . '">
-                                    <svg class="filament-link-icon w-4 h-4 mr-1"
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                        fill="currentColor" aria-hidden="true">
-                                        <path
-                                            d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z">
-                                        </path>
-                                    </svg>
-                                </a>';
-
-                    $deleteBtn = '<a href="#" onclick="deleteFee(' . $row->id . ')" class="text-danger w-4 h-4 mr-1">
-                                    <svg class="filament-link-icon w-4 h-4 mr-1"
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                        fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd"
-                                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                            clip-rule="evenodd"></path>
-                                    </svg>
-                                </a>';
-
-                    $btn = $editBtn . $deleteBtn;
-
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-
-        $floors = Floor::all();
-        return view('admin.fee.studentfee', compact('floors'));
+        $id = $request->input('id');
+        $fee = Fee::where("id", $id)->first();
+        return response()->json(['fee' => $fee]);
     }
 
-
-    public function user_fee_edit(Request $request, $id)
+    public function pay_fee(Request $request)
     {
-        $fee = Fee::with('registration')->find($id);
+        $fee = Fee::find($request->id);
 
-        return view('admin.fee.edit', get_defined_vars());
-    }
-    public function user_fee_update(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
+        if ($fee) {
+            $fee->paid_amount = $request->paid_amount;
+            $fee->registration_id = $request->registration_id;
+            $fee->fee_date = $request->fee_date;
+            $fee->amount = $request->amount;
 
-            'fee_date' => 'required|date',
-            'amount' => 'required|numeric',
+            if ($request->paid_amount < $request->amount) {
+                $fee->status = 'Partially-Paid';
+            } elseif ($request->paid_amount == $request->amount) {
+                $fee->status = 'Paid';
+            }
 
-            'status' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'errors' => $validator->errors()
+            $fee->save();
+            Transection::create([
+                'transection_type_id' => $fee->id,
+                'amount' => $request->paid_amount,
+                'transection_date' => Carbon::now(),
+                'description' => 'Fee payment',
+                'transection_type' => 'Fees',
+                'status' => 'credit',
             ]);
+            session()->flash('success', 'Fee Paid Successfully');
+            return response()->json(['status' => true, 'message' => 'Fee Paid Successfully.']);
         }
 
-        // Retrieve user details
-
-
-        // $feeDate = Carbon::parse($request->fee_date);
-        // $monthName = $feeDate->format('F');
-        // $year = $feeDate->format('Y');
-
-        // $existingFee = Fee::where('registration_id', $request->user_id)
-        //     ->whereMonth('fee_date', $feeDate->month)
-        //     ->whereYear('fee_date', $year)
-        //     ->first();
-
-        // if ($existingFee) {
-        //     $request->session()->flash('error', "{$userName}'s fees for {$monthName} {$year} have already been submitted.");
-
-        //     return response()->json([
-        //         'status' => false,
-        //         'message' => "{$userName}'s fees for {$monthName} {$year} have already been submitted."
-        //     ]);
-        // }
-
-        $fee = Fee::find($id);
-        $fee->registration_id = $request->user_id;
-        $fee->fee_date = $request->fee_date;
-        $fee->amount = $request->amount;
-        $fee->paid_amount = $request->paid_amount;
-
-        $fee->status = $request->status;
-        $fee->save();
-
-        $transection = Transection::where('transection_type_id', $fee->id)->first();
-        $transection->transection_type_id = $fee->id;
-        $transection->amount = $fee->amount;
-        $transection->transection_date = $fee->fee_date;
-        $transection->description = "Fee for Room Rent";
-        $transection->status = 'credit';
-        $transection->save();
-
-
-        $request->session()->flash('success', " Fees Updated successfully.");
-        return response()->json([
-            'status' => true,
-            'message' => " Fees Updated successfully."
-        ]);
-    }
-
-
-
-    public function user_fee_destroy(Request $request, $fee_id)
-    {
-        $fee = Fee::find($fee_id);
-        if (empty($fee)) {
-            $request->session()->flash('success', 'Fee Not Found');
-            return response()->json([
-                'status' => false,
-                'message' => 'Fee Not Found'
-            ]);
-        }
-        $transection = Transection::where('transection_type_id', $fee_id)->first();
-        if ($transection) {
-            $transection->delete();
-        }
-        $fee->delete();
-
-        $request->session()->flash('success', 'Fee Deleted Successfully');
-        return response()->json([
-            'status' => true,
-            'message' => 'Fee Deleted Successfully'
-        ]);
+        return response()->json(['status' => false, 'message' => 'Fee not found.'], 404);
     }
 }

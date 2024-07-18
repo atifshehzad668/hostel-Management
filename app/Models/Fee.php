@@ -11,6 +11,7 @@ class Fee extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    protected $fillable = ['registration_id', 'fee_date', 'amount', 'status'];
 
     public function registration()
     {

@@ -42,6 +42,7 @@ class RegistrationController extends Controller
             $registration->floor_id = $request->floor_id;
             $registration->room_id = $request->room_id;
             $registration->address = $request->address;
+            $registration->amount = $request->amount;
             $registration->registration_date = $request->registration_date;
             $registration->phone_no = $request->phone_no;
             $registration->whatsapp_no = $request->whatsapp_no;
@@ -167,6 +168,7 @@ class RegistrationController extends Controller
             $registration->cnic = $request->cnic;
             $registration->floor_id = $request->floor_id;
             $registration->room_id = $request->room_id;
+            $registration->amount = $request->amount;
             $registration->address = $request->address;
             $registration->registration_date = $request->registration_date;
             $registration->phone_no = $request->phone_no;

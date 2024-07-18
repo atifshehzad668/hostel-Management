@@ -246,4 +246,12 @@
             });
         });
     </script>
+
+
+
+
+
+
+
+
 @endsection
